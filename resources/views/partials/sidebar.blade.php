@@ -10,7 +10,7 @@
         </li>
 
         <li class="nav-item">
-            <a href="{{route('admin.project.index')}}" class="nav-link">
+            <a href="{{route('admin.crudprojects.index')}}" class="nav-link">
                 <svg class="bi pe-none me-2" width="16" height="16">
                     <use xlink:href="#home"></use>
                 </svg>
