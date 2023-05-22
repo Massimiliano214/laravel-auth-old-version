@@ -28,8 +28,9 @@ class CrudProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+    {   
+        
+        return view('admin.posts.create');
     }
 
     /**
@@ -40,7 +41,13 @@ class CrudProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $form_data = $request->all();
+        $newPost = new Post();
+        $newPost->title = $form_data['title'];
+        $newPost->content = $form_data['content'];
+        $newPost->slug = $form_data['slug'];
+        $newPost->save();
+        return redirect()->route('admin.posts.show', ['post' => $newPost->slug]);
     }
 
     /**
@@ -49,9 +56,10 @@ class CrudProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $post = Post::findOrFail($slug);
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -62,7 +70,7 @@ class CrudProjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -72,9 +80,13 @@ class CrudProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+        $post = Post::findOrFail($slug);
+         
+         $form_data = $request->all();
+         $post->update($form_data);
+        return redirect()->route('admin.posts.show', ['post' => $post->slug]);
     }
 
     /**
@@ -85,6 +97,7 @@ class CrudProjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post->delete();
+        return redirect()->route('admin.posts.index');
     }
 }
