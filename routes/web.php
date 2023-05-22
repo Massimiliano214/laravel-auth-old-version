@@ -18,6 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::middleware(['auth', 'verified'])
+    ->name('admin.')->prefix('admin')
+    ->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('crudprojects', CrudProjectController::class)->parameters(['crudprojects' => 'crudproject:slug']);
+    });
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
